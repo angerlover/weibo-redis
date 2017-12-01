@@ -123,13 +123,13 @@ function getPostsFromFollowing($userid)
 	$res = [];
 	// 获取关注列表
 	$redis = getRedis();
-	$following = $redis->zRevRange('user:'.$userid.':following',0,-1,true);
+	$following = $redis->zRevRange('user:'.$userid.':following',0,-1);
 	// var_dump($following);die;
 	foreach ($following as $key => $value)
 	{
-		if(getPostByUserId($key))
+		if(getPostByUserId($value))
 		{
-			$res[] = getPostByUserId($key);
+			$res[] = getPostByUserId($value);
 		}
 	}
 	// var_dump($res);die;

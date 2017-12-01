@@ -19,10 +19,10 @@
 </div>
 </div>
 <h2 class="username"><?php echo $redis->hGet('user:'.$userid,'name');?></h2>
-<?php if(!$isFollowing):;?>
-<a id="like" href="follow.php?uid=<?php echo $userid;?>&f=1" like="1" class="btn btn-success">关注ta</a>
+<?php if(!isFollowing($userid)):;?>
+<a id="like" href="#" like="1" class="btn btn-success">关注ta</a>
 <?php else:;?>
-<a id="like" href="follow.php?uid=<?php echo $userid;?>&f=0" like="0" class="btn btn-success">取消关注</a>
+<a id="like" href="#" like="0" class="btn btn-success">取消关注</a>
 <?php endif;?>
 <?php if($allPosts):;?>
 <?php foreach($allPosts as $k=>$v):;?>
@@ -77,3 +77,29 @@
 </html>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript" src="js/c&z.js"></script>
+<script type="text/javascript">
+	var like = $('#like');
+	console.log(like);
+	like.click(function(event) 
+	{
+		console.log('1');
+		var f = like.attr('like');
+		event.preventDefault();
+		$.ajax({
+			url: 'follow.php?f='+f+'&uid=<?php echo $userid;?>',
+			type: 'get',
+			dataType: 'json',
+			success:function(data)
+			{
+				if(data.error == 0)
+				{
+					like.html(data.now_content);
+					like.attr('like',data.now_status);
+				}
+
+			}
+		
+			});	
+
+	});
+</script>

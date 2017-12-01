@@ -51,14 +51,8 @@ else
 $username = $redis->hGet('user:'.$userid,'name');
 
 
-// 获取当前用户可见的微博（自己和关注列表）
-
-
-
-// 2关注列表的微博
+//关注列表的微博(包括了自己)
 $myPosts = getPostsFromFollowing($userid);
-
-
 
 
 // 获取粉丝数和关注数
