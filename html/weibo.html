@@ -1,47 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="it">
-<head>
-<meta content="text/html; charset=UTF-8" http-equiv="content-type">
-<title>我的主页</title>
-<link href="css/style.css" rel="stylesheet" type="text/css">
-<link href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
-<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-<script type="text/javascript" src="js/c&z.js"></script>
-</head>
-<style type="text/css">
-	i{
-		font-size: 10px;
-	}
-</style>
-<body>
-<div id="page">
-<div id="header">
-<a href="/"><img style="border:none" src="logo.png" width="192" height="85" alt="Retwis"></a>
-<div id="navbar">
-<?php if(isLogin()):;?>  欢迎您， <?php echo $username; ?> <?php endif;?>
-<a href="home.php">主页</a>
-| <?php if(isLogin()):;?><a href="setting.php">个人中心</a><?php endif;?>
-| <a href="timeline.php">微博广场</a>
-| <a href="logout.php">退出</a>
-
-</div>
-</div>
-<div id="postform">
-<form method="POST" action="home.php">
-<?php echo $username;?>, 有啥感想?
-<br>
-<table>
-<tr><td><textarea cols="70" rows="3" name="status"></textarea></td></tr>
-<tr><td align="right"><input class="btn btn-warning" type="submit" name="doit" value="发布"></td></tr>
-</table>
-</form>
-<div id="homeinfobox">
-粉丝 <?php echo $fanNum-1;?><br>
-关注 <?php echo $followingNum;?><br>
-</div>
-</div>
-<?php if($myPosts):;?>
-<?php foreach($myPosts as $k=>$v):;?>
+<!-- 微博实体：要求所有的$k=>$v-->
 <div class="container">
 <div class="container post">
 	<div class="col-sm-1">
@@ -90,12 +47,3 @@
 	</div>
 </div>
 </div>
-<?php endforeach;?>
-<?php endif;?>
-
-<div id="footer">redis版本的仿微博项目 <a href="http://redis.io">Redis key-value database</a></div>
-</div>
-</body>
-</html>
-<script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-

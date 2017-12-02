@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="content-type">
-<title>Retwis - Example Twitter clone based on the Redis Key-Value DB</title>
+<title>微博广场</title>
 <link href="css/style.css" rel="stylesheet" type="text/css">
 <link href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
 <style type="text/css">
@@ -18,7 +18,7 @@
 <div id="navbar">
 <?php if(isLogin()):;?>  欢迎您， <?php echo $redis->hGet('user:'.$_SESSION['userid'],'name'); ?> <?php endif;?>
 <a href="home.php">主页</a>
-| <?php if(isLogin()):;?><a href="setting.php">设置</a><?php endif;?>
+| <?php if(isLogin()):;?><a href="setting.php">个人中心</a><?php endif;?>
 | <a href="timeline.php">微博广场</a>
 | <a href="logout.php">退出</a>
 </div>
@@ -70,6 +70,12 @@
 		<a onclick="collect(this);" class="collect" f='1' postid="<?php echo $k;?>" href="#"> <span>收藏</span> <span class="glyphicon glyphicon-heart-empty"></span></a>
 		<?php else:;?>
 		<a onclick="collect(this);" class="collect" f='0' postid="<?php echo $k;?>" href="#"><span>已收藏</span> <span class="glyphicon glyphicon-heart"></span></a>
+		<?php endif;?>
+	</div>
+	<!-- 删除微博 -->
+	<div class="col-sm-3">
+		<?php if(isMyPosts($v['postid'])):;?>
+		<a postid="<?php echo $v['postid'];?>" onclick="remove(this)" href="#">删除</a>
 		<?php endif;?>
 	</div>
 </div>

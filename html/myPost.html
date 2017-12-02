@@ -2,7 +2,7 @@
 <html>
 <meta charset="utf-8">
 <head>
-	<title>我的收藏</title>
+	<title>我的赞</title>
 	<link href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
@@ -21,17 +21,16 @@
 <div class="navbar-left">
 	<ul class="nav nav-pills nav-stacked">
 	<li><a href="setting.php">个人设置</a></li>
-	<li><a href="myPost.php">我的微博</a></li>
+	<li class="active"><a href="myPost.php">我的微博</a></li>
 	<li><a href="myfans.php" >我的粉丝</a></li>
 	<li><a href="mySubsribe.php">我的关注</a></li>
-	<li class="active"><a href="myCollection.php">我的收藏</a></li>
+	<li><a href="myCollection.php">我的收藏</a></li>
 	<li><a href="myZan.php">我的赞</a></li>
 </ul>
 </div>
-	<!-- 做一个我的粉丝列表 -->
 	<div class="col-md-3"></div>
 	<div class="navbar-left" >
-		<?php foreach($myCollections as $k=>$v):;?>
+		<?php foreach($myPost as $k=>$v):;?>
 		<div class="container">
 <div class="container post">
 	<div class="col-sm-1">
@@ -40,7 +39,7 @@
 	</div>
 	<div style="width: 700px" class="col-sm-10">
 		<?php if(@$v['isDeleted'] == 1):;?>
-			<div class="alert alert-warning"><?php echo '该内容已被原作者删除，请取消收藏！';?></div>
+			<div class="alert alert-warning"><?php echo '该内容已被原作者删除！';?></div>
 		<?php else:;?>
 		<?php echo $v['status'];?>
 		<?php endif;?>
@@ -70,7 +69,7 @@
 	</div>
 	<div class="col-sm-2">
 		<?php if(!everCollectedThisPost($k)):;?>
-		<a onclick="collect(this);" id="collect" f='1' postid="<?php echo $k;?>" href="#"><span>收藏</span> <span class="glyphicon glyphicon-heart-empty"></span></a>
+		<a onclick="collect(this);" id="collect" f='1' postid="<?php echo $k;?>" href="#"><span>收藏</span><span class="glyphicon glyphicon-heart-empty"></span></a>
 		<?php else:;?>
 		<a onclick="collect(this);" id="collect" f='0' postid="<?php echo $k;?>" href="#"><span>已收藏</span> <span class="glyphicon glyphicon-heart"></span></a>
 		<?php endif;?>

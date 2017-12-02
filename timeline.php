@@ -26,7 +26,8 @@ foreach ($newestPostIds as $key => $value)
 	// 利用merge把微博的用户名,pic拼接到一起
 	$newestPosts[$value] = array_merge($a=$redis->hGetAll('post:'.$value),
 		['username'=>$redis->hGet('user:'.$a['user_id'],'name'),
-		 'pic'=>$redis->hGet('user:'.$a['user_id'],'pic')
+		 'pic'=>$redis->hGet('user:'.$a['user_id'],'pic'),
+		 'postid' =>$value
 		]);
 }
 

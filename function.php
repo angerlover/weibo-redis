@@ -42,7 +42,7 @@ function isLogin()
 
 /**
  *
- * 根据用户id获取其所有微博（包含用户名和pic）
+ * 根据用户id获取其所有微博（包含用户名和pic，postid）
  *
  */
 
@@ -57,7 +57,8 @@ function getPostByUserId($userid)
 	foreach ($postIds as $key => $value) 
 	{
 		$res[$value] = array_merge($temp = $redis->hGetAll('post:'.$value),['username'=>$redis->hGet('user:'.$temp['user_id'],'name'),
-			'pic'=>$redis->hGet('user:'.$temp['user_id'],'pic')
+			'pic'=>$redis->hGet('user:'.$temp['user_id'],'pic'),
+			'postid' =>$value,
 			]);
 	}
 	return $res;
@@ -125,6 +126,7 @@ function getPostsFromFollowing($userid)
 	$redis = getRedis();
 	$following = $redis->zRevRange('user:'.$userid.':following',0,-1);
 	// var_dump($following);die;
+	// 循环关注列表取出所有微博
 	foreach ($following as $key => $value)
 	{
 		if(getPostByUserId($value))
@@ -133,7 +135,34 @@ function getPostsFromFollowing($userid)
 		}
 	}
 	// var_dump($res);die;
-	return $res;
+
+	// 根据时间倒序排序 三维数组依据post_time排序并且变为一维
+	// 三维变一维
+	$temp = [];
+	foreach($res as $k=>$v)
+	{
+		foreach($v as $k1=>$v1)
+		{
+			$temp[] = $v1;
+		}
+	}
+	// var_dump($temp);die;
+	// 一维数组依据post_time排序
+	$temp2 = [];
+	foreach($temp as $v)
+	{
+		$temp2[] = $v['post_time'];
+	}
+	// 降序排序
+	arsort($temp2);
+	// 按照 这个顺序重新排列
+	$final = [];
+	foreach ($temp2 as $key => $value) 
+	{
+		$final[$key] = $temp[$key];
+	}
+	// var_dump($final);die;
+	return $final;
 
 }
 
@@ -207,7 +236,8 @@ function hasZanedPosts($userid)
 	{
 		$res[$value] = array_merge($temp = $redis->hGetAll('post:'.$value),
 			['username'=>$redis->hGet('user:'.$temp['user_id'],'name'),
-			 'pic'=>$redis->hGet('user:'.$temp['user_id'],'pic')
+			 'pic'=>$redis->hGet('user:'.$temp['user_id'],'pic'),
+			 'postid'=>$value
 			]
 		);
 	}
@@ -229,6 +259,7 @@ function zanedCount($postid)
 
 
 /*=====  End of 赞  ======*/
+
 
 /*============================
 =            收藏微博            =
@@ -263,16 +294,36 @@ function hasCollectedPosts($userid)
 	$res = [];
 	foreach ($allPostIds as $key => $value) 
 	{
+		// 前端判断$res中可能有空的值，表示已经被删除，显示原微博以及被删除
 		$res[$value] = array_merge($temp = $redis->hGetAll('post:'.$value),
 			['username'=>$redis->hGet('user:'.$temp['user_id'],'name'),
-			  'pic'=>$redis->hGet('user:'.$temp['user_id'],'pic')
+			  'pic'=>$redis->hGet('user:'.$temp['user_id'],'pic'),
+			  'postid' => $value
 			]
 		);
-	}
 
+	}
+	// var_dump($res);die;
 	return $res;
 }
 
 
 /*=====  End of 收藏微博  ======*/
+
+/*----------  删除微博  ----------*/
+
+/**
+ *
+ * 指定微博id是否是我的微博
+ *
+ */
+
+function isMyPosts($postid)
+{
+	$redis = getRedis();
+	$userid = $_SESSION['userid'];
+	$myPosts = $redis->zRange('user:'.$userid.':posts',0,-1);
+	return in_array($postid, $myPosts);
+}
+
 

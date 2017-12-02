@@ -1,4 +1,3 @@
-// 赞
 	function zan(a)
 	{
 		var zan = $(a);
@@ -74,4 +73,39 @@
 
 		});
 
+	}
+
+	function remove(a)
+	{
+		var a = $(a);
+		var postid = a.attr('postid');
+		// 阻止默认事件
+		event.preventDefault();
+		// 弹出确认框
+		if(confirm('确定要删除这条微博吗？'))
+		{
+			// ajax
+			$.ajax({
+				url: 'delete.php?postid='+postid,
+				type: 'get',
+				dataType: 'json',
+				success:function(data)
+				{
+
+					if(data.error == 0)
+					{
+						// 删除整个div
+
+						var target = a.parent().parent().parent().remove();
+						target.fadeOut('slow', function() {
+							
+						});
+					}
+				}
+			});
+			
+			
+
+		}
+		console.log(postid);
 	}

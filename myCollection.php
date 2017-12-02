@@ -16,5 +16,4 @@ $redis = getRedis();
 $userid = $_SESSION['userid'];
 // 获取我收藏的微博
 $myCollections = hasCollectedPosts($userid);
-
 require 'html/myCollections.html';

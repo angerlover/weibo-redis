@@ -4,7 +4,7 @@ require './function.php';
 if(!isLogin())
 {
 	echo '你还没有登录！';
-	header('refresh:3;url=login.html');exit;
+	header('refresh:3;url=html/login.html');exit;
 }
 $userid = $_SESSION['userid'];
 $redis = getRedis();
